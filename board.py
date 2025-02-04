@@ -17,3 +17,11 @@ class Board:
         new_board = Board(self.board_size)
         new_board.grid = self.grid.copy()
         return new_board
+
+
+class QueensBoard(Board):
+    """A queens puzzle board representation."""
+
+    def __init__(self, board_size: int):
+        super().__init__(board_size)
+        self.queens = np.zeros((board_size, board_size), dtype=int)
