@@ -1,8 +1,10 @@
 from board import Board
 from game import Game
 
+
 class Solver:
     """Backtracking solver to count or find solutions."""
+
     def __init__(self, game: Game):
         self.game = game
         self.solution_count = 0

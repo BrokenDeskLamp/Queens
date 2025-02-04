@@ -3,6 +3,7 @@ import torch.nn as nn
 import torch.optim as optim
 from board import Board
 
+
 class BoardGeneratorModel(nn.Module):
     def __init__(self, board_size: int, num_regions: int, latent_dim: int = 32):
         super().__init__()
@@ -10,9 +11,7 @@ class BoardGeneratorModel(nn.Module):
         self.num_regions = num_regions
         self.latent_dim = latent_dim
         self.fc = nn.Sequential(
-            nn.Linear(latent_dim, 128),
-            nn.ReLU(),
-            nn.Linear(128, board_size * board_size * num_regions)
+            nn.Linear(latent_dim, 128), nn.ReLU(), nn.Linear(128, board_size * board_size * num_regions)
         )
 
     def forward(self, z):
@@ -20,6 +19,7 @@ class BoardGeneratorModel(nn.Module):
         logits = logits.view(-1, self.board_size, self.board_size, self.num_regions)
         board_out = torch.argmax(logits, dim=-1) + 1
         return board_out
+
 
 class GenerativeBoardGenerator:
     def __init__(self, board_size: int, num_regions: int, latent_dim: int = 32):

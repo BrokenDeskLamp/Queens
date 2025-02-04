@@ -1,6 +1,7 @@
 from solver import Solver
 from game import QueensGame
 
+
 def objective_function(board) -> float:
     game = QueensGame(board.board_size)
     solver = Solver(game)

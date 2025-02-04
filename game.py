@@ -1,8 +1,10 @@
 import numpy as np
 from board import Board
 
+
 class Game:
     """Abstract base class for a puzzle game."""
+
     def __init__(self, board_size: int):
         self.board_size = board_size
 
@@ -15,8 +17,10 @@ class Game:
     def evaluate_difficulty(self, board: Board) -> float:
         raise NotImplementedError
 
+
 class QueensGame(Game):
     """Concrete implementation of the Queens puzzle."""
+
     def __init__(self, board_size: int):
         super().__init__(board_size)
 

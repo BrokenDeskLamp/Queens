@@ -1,7 +1,9 @@
 import numpy as np
 
+
 class Board:
     """A generic puzzle board representation."""
+
     def __init__(self, board_size: int):
         self.board_size = board_size
         self.grid = np.zeros((board_size, board_size), dtype=int)
