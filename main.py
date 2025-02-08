@@ -1,9 +1,6 @@
-from game import QueensGame
-from solver import Solver
-from model import GenerativeBoardGenerator
-from objective import objective_function
+import numpy as np
 
-
+"""
 def main():
     board_size = 8
     num_regions = 8
@@ -27,6 +24,13 @@ def main():
     generated_board = gen_model.generate_board()
     print("Generated board:")
     generated_board.display()
+"""
+
+
+def main():
+    n = 8
+    board = np.random.randint(1, n + 1, (n, n))
+    print("Done!")
 
 
 if __name__ == "__main__":

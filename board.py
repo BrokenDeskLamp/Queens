@@ -24,4 +24,3 @@ class QueensBoard(Board):
 
     def __init__(self, board_size: int):
         super().__init__(board_size)
-        self.queens = np.zeros((board_size, board_size), dtype=int)
