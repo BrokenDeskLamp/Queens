@@ -1,42 +1,45 @@
 from board import Board
-import random
 import numpy as np
 
 
-def _backtrack(queen_placement: np.ndarray, grid: np.ndarray, row: int) -> True:
-    n = queen_placement.shape[0]
+def _backtrack(queens_placement: np.ndarray, grid: np.ndarray, known_solution: np.ndarray, row: int) -> True:
+    n = queens_placement.shape[0]
     if row >= n:
         return True
 
-    cols = list(range(n))
-    random.shuffle(cols)
-    for col in cols:
-        if _is_valid_placement(queen_placement, row, col):
-            queen_placement[row][col] = 1
-            if _backtrack(queen_placement, row + 1):
+    for col in range(n):
+        if _is_valid_placement(queens_placement, grid, known_solution, row, col):
+            queens_placement[row][col] = 1
+            if _backtrack(queens_placement, grid, known_solution, row + 1):
                 return True
-            queen_placement[row][col] = 0
-
+            queens_placement[row][col] = 0
     return False
 
 
-def _is_valid_placement(queen_placement: np.ndarray, grid: np.ndarray, row: int, col: int, colour: int) -> bool:
-    check_colour = np.sum([queen_placement[i][j] for i, j in zip(*np.where(grid == colour))]) == 0
+def _is_valid_placement(
+    queens_placement: np.ndarray, grid: np.ndarray, known_solution: np.ndarray, row: int, col: int
+) -> bool:
+    colour = grid[row][col]
+    check_colour = np.sum([queens_placement[i][j] for i, j in zip(*np.where(grid == colour))]) == 0
 
     check_queens = not (
-        queen_placement[max(row - 1, 0) : row + 2, max(col - 1, 0) : col + 2].any()
-        or queen_placement[row].any()
-        or queen_placement[:, col].any()
+        queens_placement[max(row - 1, 0) : row + 2, max(col - 1, 0) : col + 2].any()
+        or queens_placement[row].any()
+        or queens_placement[:, col].any()
     )
 
-    return check_colour and check_queens
+    new_placement = queens_placement.copy()
+    new_placement[row][col] = 1
+    check_not_known = not np.array_equal(new_placement, known_solution)
+
+    return check_colour and check_queens and check_not_known
 
 
-def unique_solution(queens_board: Board) -> bool:
-    queen_placement = np.zeros((queens_board.n, queens_board.n), dtype=int)
+def unique_solution(queens_board: Board) -> np.array:
+    queens_placement = np.zeros((queens_board.n, queens_board.n), dtype=int)
+    known_solution = np.zeros((queens_board.n, queens_board.n), dtype=int)
     for queen in queens_board.queens:
-        queen_placement[queen.x, queen.y] = 1
-
+        known_solution[queen.x, queen.y] = 1
     grid = queens_board.grid.copy()
-    found = _backtrack(queen_placement, grid, 0)
-    return grid, found
+    found = _backtrack(queens_placement, grid, known_solution, 0)
+    return not found
