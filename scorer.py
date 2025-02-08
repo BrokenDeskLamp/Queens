@@ -1,10 +1,12 @@
-import numpy as np
+from solver import QueensSolver
+from board import Board
 
 
 class Scorer:
     @staticmethod
-    def evaluate_board(board):
+    def evaluate_board(board: Board) -> float:
         """Evaluate board based on complexity and uniqueness."""
-        color_diversity = len(set(board.grid.flatten()))  # Number of unique colors
-        filled_ratio = np.count_nonzero(board.grid) / (board.n**2)  # Percentage of board filled
-        return color_diversity * filled_ratio  # Simple heuristic, can be improved
+        solver = QueensSolver(board)
+        solver.solve(6)
+        num_solutions = solver.num_solutions
+        return num_solutions

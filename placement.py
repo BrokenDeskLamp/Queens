@@ -2,7 +2,7 @@ import random
 import numpy as np
 
 
-def _backtrack(grid: np.array, row: int) -> True:
+def _backtrack(grid: np.ndarray, row: int) -> True:
     n = grid.shape[0]
     if row >= n:
         return True
@@ -19,7 +19,7 @@ def _backtrack(grid: np.array, row: int) -> True:
     return False
 
 
-def _is_valid_placement(grid: np.array, row: int, col: int) -> bool:
+def _is_valid_placement(grid: np.ndarray, row: int, col: int) -> bool:
     return not (
         grid[max(row - 1, 0) : row + 2, max(col - 1, 0) : col + 2].any() or grid[row].any() or grid[:, col].any()
     )
@@ -27,6 +27,6 @@ def _is_valid_placement(grid: np.array, row: int, col: int) -> bool:
 
 def generate_queen_positions(n: int) -> np.array:
     """Generate a valid N-Queens solution."""
-    grid = np.zeros((n, n))
+    grid = np.zeros((n, n), dtype=int)
     _backtrack(grid, 0)
     return grid
