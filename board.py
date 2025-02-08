@@ -1,26 +1,23 @@
 import numpy as np
+from queen import Queen
 
 
 class Board:
-    """A generic puzzle board representation."""
+    def __init__(self, n):
+        self.n = n
+        self.grid = np.zeros((n, n), dtype=int)
+        self.queens = []
 
-    def __init__(self, board_size: int):
-        self.board_size = board_size
-        self.grid = np.zeros((board_size, board_size), dtype=int)
+    def place_queens(self, queen_positions):
+        """Place queens at specified positions."""
+        self.queens = [Queen(x, y) for x, y in queen_positions]
+        for q in self.queens:
+            self.grid[q.x, q.y] = np.random.randint(1, 9)  # Assign random colors 1-8
 
-    def display(self):
-        """Display the board."""
-        print(self.grid)
+    def spread_colors(self, strategy):
+        """Spread colors according to a chosen strategy."""
+        strategy(self.grid)
 
-    def clone(self):
-        """Return a deep copy of the board."""
-        new_board = Board(self.board_size)
-        new_board.grid = self.grid.copy()
-        return new_board
-
-
-class QueensBoard(Board):
-    """A queens puzzle board representation."""
-
-    def __init__(self, board_size: int):
-        super().__init__(board_size)
+    def is_fully_colored(self):
+        """Check if the board has no zero cells."""
+        return np.all(self.grid > 0)
